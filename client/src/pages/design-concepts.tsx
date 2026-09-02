@@ -71,8 +71,8 @@ function ModernistConcept() {
         <section className="mo-hero mo-wrap">
           <div className="mo-hero-copy">
             <span className="mo-role">Research engineer in AI for science</span>
-            <h1>Models for science.<br /><strong>Systems that hold up.</strong></h1>
-            <p>I build differentiable scientific models and evidence-grounded AI tools, from simulation to deployment.</p>
+            <h1>Machine learning systems for scientific problems.</h1>
+            <p>Differentiable simulation, inverse problems and agents for research, each taken from question to tested system. Finishing a PhD in astrophysics at the University of Surrey.</p>
             <div className="mo-actions"><a href="#mo-work">View systems<ArrowRight size={16} /></a><ExternalLink href={links.github}><Github size={16} />GitHub</ExternalLink></div>
           </div>
           <figure className="mo-hero-figure">
@@ -124,7 +124,7 @@ function ModernistConcept() {
           </article>
           <div className="mo-paper-pair">
             <Outbound href={links.perturber} className="mo-paper-link"><span>First author, MNRAS 550(4)</span><strong>Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers</strong></Outbound>
-            <Outbound href={links.convergence} className="mo-paper-link"><span>Co-author, MNRAS 546(1)</span><strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong></Outbound>
+            <Outbound href={links.convergence} className="mo-paper-link"><span>MNRAS 546(1), 2026</span><strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong></Outbound>
           </div>
         </section>
 
@@ -177,7 +177,7 @@ function InstrumentConcept() {
         <section className="in-papers in-wrap" id="in-papers">
           <div className="in-papers-head"><h2>Research record</h2><p>Machine learning for dynamical systems, grounded in numerical astrophysics.</p></div>
           <article className="in-paper-lead"><img src={media.neuralOde} alt="Neural ODE and simulation predictions for black hole binary orbital evolution" /><div><span>First author, 2026</span><h3>Continuous-time modelling of black hole binary evolution with neural ODEs</h3><p>Monthly Notices of the Royal Astronomical Society, 546(3), stag135.</p><Outbound href={links.neuralOde}>Journal article</Outbound></div></article>
-          <div className="in-paper-links"><Outbound href={links.perturber}><span>First author</span>Perturber-driven dynamics of supermassive black hole binaries</Outbound><Outbound href={links.convergence}><span>Co-author</span>Converging on massive black hole binary eccentricity</Outbound><Outbound href={links.scholar}><span>Complete profile</span>Google Scholar</Outbound></div>
+          <div className="in-paper-links"><Outbound href={links.perturber}><span>First author</span>Perturber-driven dynamics of supermassive black hole binaries</Outbound><Outbound href={links.convergence}><span>MNRAS 546(1)</span>Converging on massive black hole binary eccentricity</Outbound><Outbound href={links.scholar}><span>Complete profile</span>Google Scholar</Outbound></div>
         </section>
 
         <section className="in-method in-wrap" id="in-method"><h2>How I build</h2><div><article><strong>Define the boundary</strong><p>Separate physical assumptions, learned components and serving contracts.</p></article><article><strong>Lock the evaluation</strong><p>Use disjoint splits, matched baselines and reproducible seeds.</p></article><article><strong>Trace the result</strong><p>Record metrics, artefacts, cost and known limitations.</p></article></div></section>
@@ -203,7 +203,7 @@ function RecordConcept() {
         <section className="re-papers re-wrap" id="re-papers">
           <h2>Published research</h2>
           <article className="re-lead-paper"><div><span>First author, MNRAS 546(3)</span><h3>Continuous-time modelling of black hole binary evolution with neural ODEs</h3><p>A single parameter-conditioned vector field learns orbital evolution across an ensemble of galaxy-merger simulations.</p><Outbound href={links.neuralOde}>Read the article</Outbound></div><img src={media.neuralOde} alt="Neural ODE predictions of black hole binary evolution through merger" /></article>
-          <div className="re-other-papers"><Outbound href={links.perturber}><span>First author, MNRAS 550(4)</span><strong>Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers</strong><p>Testing physical eccentricity stochasticity beyond numerical noise.</p></Outbound><Outbound href={links.convergence}><span>Co-author, MNRAS 546(1)</span><strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong><p>Resolution requirements for reliable binary eccentricities.</p></Outbound></div>
+          <div className="re-other-papers"><Outbound href={links.perturber}><span>First author, MNRAS 550(4)</span><strong>Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers</strong><p>Testing physical eccentricity stochasticity beyond numerical noise.</p></Outbound><Outbound href={links.convergence}><span>MNRAS 546(1), 2026</span><strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong><p>Resolution requirements for reliable binary eccentricities.</p></Outbound></div>
         </section>
 
         <section className="re-software re-wrap" id="re-software">

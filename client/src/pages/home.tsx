@@ -46,8 +46,8 @@ export default function Home() {
         <section className="mo-hero mo-wrap">
           <div className="mo-hero-copy">
             <span className="mo-role">Research engineer · AI for science</span>
-            <h1>AI for science.<br /><strong>Built and evaluated.</strong></h1>
-            <p>I design, implement and test machine learning systems for scientific problems: differentiable simulation, inverse problems and agents for research.</p>
+            <h1>Machine learning systems for scientific problems.</h1>
+            <p>Differentiable simulation, inverse problems and agents for research, each taken from question to tested system. Finishing a PhD in astrophysics at the University of Surrey.</p>
             <div className="mo-actions">
               <a href="#projects">Flagship projects <ArrowRight size={16} aria-hidden="true" /></a>
               <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><Github size={15} aria-hidden="true" />GitHub</a>
@@ -72,8 +72,8 @@ export default function Home() {
             <div className="mo-lead-copy">
               <span>AI engineering · agent systems</span>
               <h3>Research Brief Agent</h3>
-              <p>A streaming FastAPI service that turns a research question into a cited decision memo. Evidence comes first: semantic retrieval into a Qdrant corpus, full-text reading of candidate papers, then a deterministic check that strips ungrounded citations before the memo is written.</p>
-              <p>Every run reports latency, token use and cost, and is traced to Langfuse. The repository ships with 184 unit tests and a 7-case offline quality gate that fails on hallucinated citations.</p>
+              <p>Streaming FastAPI service that turns a research question into a cited decision memo. Qdrant retrieval, full-text reading before synthesis, deterministic citation checks, and per-run latency, token use and cost.</p>
+              <p>184 unit tests and a 7-case quality gate run in CI, with tracing to Langfuse.</p>
               <div className="mo-project-links">
                 <Outbound href={LINKS.agent}>Repository</Outbound>
                 <Outbound href={LINKS.agentEvals}>Evaluation suite</Outbound>
@@ -103,7 +103,7 @@ export default function Home() {
               <div>
                 <span>Scientific ML · differentiable simulation</span>
                 <h3>Hybrid closure for 2D turbulence</h3>
-                <p>A PyTorch closure trained through a JAX spectral solver, with reverse-mode gradients composed across two served Tesseract components. On 32 locked test trajectories the model cuts 500-step rollout error by 71.7% versus the solver alone, against matched baselines and tracked reports.</p>
+                <p>A PyTorch closure trained through a JAX spectral solver, with reverse-mode gradients composed across two served Tesseract components. On 32 locked test trajectories it cuts 500-step rollout error by 71.7% versus the solver alone.</p>
                 <div className="mo-project-links">
                   <Outbound href={LINKS.hybridDemo}>Walkthrough</Outbound>
                   <Outbound href={LINKS.hybrid}>Repository</Outbound>
@@ -116,7 +116,7 @@ export default function Home() {
               <div>
                 <span>Inverse problems · Tesseract</span>
                 <h3>Inverse estimation for the Burgers equation</h3>
-                <p>Recover the viscosity of the Burgers equation from sparse, noisy measurements with three swappable methods: a differentiable solver adjoint, JAX and PyTorch PINNs behind one schema, and an amortised flow-matching posterior with calibration diagnostics.</p>
+                <p>Recovers the viscosity of the Burgers equation from sparse, noisy measurements with three methods: a differentiable solver adjoint, JAX and PyTorch PINNs behind one schema, and an amortised flow-matching posterior.</p>
                 <div className="mo-project-links">
                   <Outbound href={LINKS.burgers}>Repository</Outbound>
                 </div>
@@ -131,7 +131,7 @@ export default function Home() {
             <div className="mo-paper-copy">
               <span>First author · MNRAS 546(3), 2026</span>
               <h3>Continuous-time modelling of black hole binary evolution with neural ODEs</h3>
-              <p>A parameterised neural ODE learns the orbital evolution of black hole binaries across an ensemble of N-body galaxy-merger simulations. It reproduces held-out trajectories with median fractional errors of order 10⁻² and yields merger timescales consistent with direct simulation within current theoretical uncertainties.</p>
+              <p>A parameterised neural ODE trained on an ensemble of N-body galaxy-merger simulations. Reproduces held-out orbital trajectories with median fractional errors of order 10⁻², and merger timescales consistent with direct simulation.</p>
               <div className="mo-paper-inline-links">
                 <Outbound href={LINKS.neuralOde}>Journal article</Outbound>
                 <Outbound href={LINKS.neuralOdeArxiv}>arXiv</Outbound>
@@ -146,11 +146,11 @@ export default function Home() {
           <p className="mo-research-note">Earlier numerical astrophysics</p>
           <div className="mo-paper-compact">
             <Outbound href={LINKS.perturber}>
-              <span>First author · MNRAS 550(4)</span>
+              <span>First author · MNRAS 550(4), 2026</span>
               <strong>Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers</strong>
             </Outbound>
             <Outbound href={LINKS.convergence}>
-              <span>Co-author · MNRAS 546(1)</span>
+              <span>MNRAS 546(1), 2026</span>
               <strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong>
             </Outbound>
           </div>
@@ -162,8 +162,8 @@ export default function Home() {
         <section className="mo-profile mo-wrap" id="profile">
           <h2>Profile</h2>
           <div>
-            <p>I am completing a PhD at the University of Surrey, where I study massive black hole binary dynamics with N-body simulations and machine-learning surrogates.</p>
-            <p>I work from research question to evaluated system. The evaluation comes first, the system stays inspectable, and the limitations are reported alongside the results.</p>
+            <p>I research massive black hole binary dynamics with N-body simulations and neural surrogates, and I ship the systems that make the results reproducible.</p>
+            <p>Working method: lock the evaluation before optimising, keep the system inspectable, report limitations with the results.</p>
             <div className="mo-stack">Python · PyTorch · JAX · FastAPI · Qdrant · Langfuse · Docker · HPC</div>
             <div className="mo-availability">Open to AI for science and AI engineering roles.</div>
             <div className="mo-contact-links">
