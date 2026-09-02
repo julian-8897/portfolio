@@ -1,235 +1,185 @@
-import { Link } from "wouter";
-import { ArrowUpRight, FileText, Github, Mail } from "lucide-react";
-import { ProjectHero } from "@/components/project-hero";
-import { Reveal } from "@/components/reveal";
-import { Section, SectionLabel } from "@/components/section";
-import { featured, recognition, skills } from "@/lib/projects";
+import { ArrowRight, ArrowUpRight, Github, Mail } from "lucide-react";
+import "./modernist-theme.css";
 
-const focusAreas = [
-  "Scientific machine learning",
-  "Neural ODEs and operators",
-  "Physics-informed modelling",
-  "End-to-end ML products",
-];
+const LINKS = {
+  hybrid: "https://github.com/julian-8897/tesseract-hybrid-closure",
+  hybridDemo: "https://julian-8897.github.io/tesseract-hybrid-closure/",
+  burgers: "https://github.com/julian-8897/tesseract-pinn-inverse-burgers",
+  agent: "https://github.com/julian-8897/research-brief-agent",
+  agentEvals: "https://github.com/julian-8897/research-brief-agent/tree/main/evals",
+  neuralOde: "https://doi.org/10.1093/mnras/stag135",
+  neuralOdeArxiv: "https://arxiv.org/abs/2601.13019",
+  perturber: "https://doi.org/10.1093/mnras/stag1374",
+  convergence: "https://doi.org/10.1093/mnras/stag026",
+  github: "https://github.com/julian-8897",
+  scholar: "https://scholar.google.com/citations?hl=en&user=9YnAVL4AAAAJ",
+};
 
-export default function Home() {
+const MEDIA = {
+  hybrid: "/concepts/hybrid-rollout.png",
+  burgers: "/concepts/inverse-burgers-architecture.png",
+  neuralOde: "/concepts/neural-ode-timescales.svg",
+};
+
+function Outbound({ href, children, className = "" }: { href: string; children: React.ReactNode; className?: string }) {
   return (
-    <div className="fade-in">
-      <Section full className="relative min-h-screen overflow-hidden grid-bg">
-        <div className="absolute inset-0 bg-[radial-gradient(circle_at_20%_20%,hsl(var(--primary)/0.18),transparent_32%),radial-gradient(circle_at_80%_0%,hsl(27_87%_55%/0.14),transparent_28%),linear-gradient(to_bottom,hsl(var(--background)/0.25),hsl(var(--background))_82%)]" />
-        <div className="relative max-w-6xl mx-auto px-6 lg:px-10 pt-32 pb-20 min-h-screen grid lg:grid-cols-12 gap-12 items-center">
-          <div className="lg:col-span-7">
-            <Reveal>
-              <div className="mono-font text-xs uppercase tracking-[0.28em] text-primary mb-5">
-                PhD researcher · Scientific ML · Applied research
-              </div>
-              <h1 className="display-font text-5xl md:text-7xl lg:text-8xl tracking-tight leading-[0.96] text-balance">
-                Building learning systems for physical dynamics.
-              </h1>
-            </Reveal>
-            <Reveal delay={100}>
-              <p className="mt-7 text-lg md:text-xl leading-relaxed text-muted-foreground max-w-2xl text-pretty">
-                I’m Julian Chan, a physics-trained ML researcher working on neural
-                surrogates, neural operators, and production-minded tools for scientific
-                discovery.
-              </p>
-            </Reveal>
-            <Reveal delay={180}>
-              <div className="mt-9 flex flex-wrap gap-3">
-                <Link
-                  href="/work"
-                  className="inline-flex h-11 items-center gap-2 rounded-full bg-primary px-5 text-sm font-medium text-primary-foreground hover:opacity-90 transition-opacity"
-                  data-testid="link-home-work"
-                >
-                  View selected work <ArrowUpRight className="w-4 h-4" />
-                </Link>
-                <Link
-                  href="/contact"
-                  className="inline-flex h-11 items-center gap-2 rounded-full border border-border bg-background/70 px-5 text-sm font-medium hover:bg-muted transition-colors"
-                  data-testid="link-home-contact"
-                >
-                  Contact me <Mail className="w-4 h-4" />
-                </Link>
-              </div>
-            </Reveal>
-          </div>
-
-          <Reveal className="lg:col-span-5" delay={120}>
-            <div className="relative h-[430px] rounded-[2rem] border border-card-border bg-card overflow-hidden shadow-lg">
-              <ProjectHero kind="lorenz" />
-              <div className="absolute inset-x-0 bottom-0 p-6 bg-gradient-to-t from-background via-background/75 to-transparent">
-                <div className="mono-font text-[11px] uppercase tracking-widest text-muted-foreground">
-                  Live Lorenz integration
-                </div>
-                <div className="display-font mt-2 text-2xl tracking-tight">
-                  Dynamics as interface.
-                </div>
-              </div>
-            </div>
-          </Reveal>
-        </div>
-      </Section>
-
-      <Section className="py-20">
-        <div className="grid md:grid-cols-4 gap-px overflow-hidden rounded-2xl border border-border bg-border">
-          {focusAreas.map((area, i) => (
-            <Reveal key={area} delay={i * 50}>
-              <div className="h-full bg-card p-6">
-                <div className="mono-font text-[11px] uppercase tracking-widest text-primary mb-4">
-                  {String(i + 1).padStart(2, "0")}
-                </div>
-                <div className="display-font text-xl tracking-tight">{area}</div>
-              </div>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="py-10">
-        <SectionLabel index="01" label="Featured work" />
-        <div className="flex items-end justify-between gap-6 flex-wrap mb-10">
-          <h2 className="display-font text-4xl md:text-5xl tracking-tight max-w-3xl text-balance">
-            Case studies at the boundary of physics, ML, and useful software.
-          </h2>
-          <Link
-            href="/work"
-            className="inline-flex items-center gap-2 text-sm text-muted-foreground hover:text-primary"
-            data-testid="link-home-all-work"
-          >
-            All work <ArrowUpRight className="w-4 h-4" />
-          </Link>
-        </div>
-
-        <div className="grid lg:grid-cols-2 gap-5">
-          {featured.slice(0, 4).map((project, i) => (
-            <Reveal key={project.slug} delay={i * 70}>
-              <Link
-                href={`/work/${project.slug}`}
-                className="group block h-full rounded-2xl border border-card-border bg-card p-6 md:p-8 hover-elevate"
-                data-testid={`link-home-project-${project.slug}`}
-              >
-                <div className="flex items-center justify-between gap-4 mb-6">
-                  <span className="mono-font text-xs uppercase tracking-widest text-primary">
-                    {project.year}
-                  </span>
-                  <ArrowUpRight className="w-4 h-4 text-muted-foreground transition-transform group-hover:-translate-y-0.5 group-hover:translate-x-0.5 group-hover:text-primary" />
-                </div>
-                <h3 className="display-font text-2xl md:text-3xl tracking-tight leading-tight">
-                  {project.title}
-                </h3>
-                <p className="mt-3 text-sm text-muted-foreground italic">
-                  {project.subtitle}
-                </p>
-                <p className="mt-5 text-sm leading-relaxed text-muted-foreground text-pretty">
-                  {project.blurb}
-                </p>
-              </Link>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="py-20 grid lg:grid-cols-12 gap-10">
-        <div className="lg:col-span-5">
-          <SectionLabel index="02" label="Recognition" />
-          <h2 className="display-font text-4xl tracking-tight text-balance">
-            Research outputs, competitions, and shipped tools.
-          </h2>
-        </div>
-        <div className="lg:col-span-7 space-y-4">
-          {recognition.map((item, i) => (
-            <Reveal key={item.title} delay={i * 60}>
-              <a
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-start justify-between gap-6 rounded-xl border border-card-border bg-card p-5 hover-elevate"
-                data-testid={`link-recognition-${i}`}
-              >
-                <div>
-                  <div className="mono-font text-[11px] uppercase tracking-widest text-primary">
-                    {item.type} · {item.year}
-                  </div>
-                  <div className="display-font mt-2 text-xl tracking-tight">
-                    {item.title}
-                  </div>
-                  <div className="mt-1 text-sm text-muted-foreground">
-                    {item.venue}
-                  </div>
-                </div>
-                <ArrowUpRight className="w-4 h-4 text-muted-foreground shrink-0 group-hover:text-primary" />
-              </a>
-            </Reveal>
-          ))}
-        </div>
-      </Section>
-
-      <Section className="py-10">
-        <div className="rounded-3xl border border-card-border bg-card p-8 md:p-12 overflow-hidden relative">
-          <div className="absolute inset-0 grid-bg opacity-20 pointer-events-none" />
-          <div className="relative grid lg:grid-cols-12 gap-10">
-            <div className="lg:col-span-5">
-              <SectionLabel index="03" label="Toolkit" />
-              <h2 className="display-font text-4xl tracking-tight text-balance">
-                Practical tools for research-grade ML systems.
-              </h2>
-            </div>
-            <div className="lg:col-span-7 grid md:grid-cols-2 gap-6">
-              {Object.entries(skills).map(([category, items]) => (
-                <div key={category}>
-                  <div className="mono-font text-[11px] uppercase tracking-widest text-muted-foreground mb-3">
-                    {category}
-                  </div>
-                  <div className="flex flex-wrap gap-1.5">
-                    {items.slice(0, 8).map((skill) => (
-                      <span
-                        key={skill}
-                        className="mono-font text-xs px-2.5 py-1 rounded-full border border-border bg-background/60"
-                      >
-                        {skill}
-                      </span>
-                    ))}
-                  </div>
-                </div>
-              ))}
-            </div>
-          </div>
-        </div>
-      </Section>
-
-      <Section className="py-24">
-        <Reveal>
-          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-8">
-            <div>
-              <div className="mono-font text-xs uppercase tracking-widest text-primary mb-3">
-                Currently open
-              </div>
-              <h2 className="display-font text-4xl md:text-5xl tracking-tight text-balance">
-                Scientific ML, data science, applied research, and quant roles.
-              </h2>
-            </div>
-            <div className="flex flex-wrap gap-3 shrink-0">
-              <Link
-                href="/about"
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-border px-5 text-sm hover:bg-muted transition-colors"
-                data-testid="link-home-about"
-              >
-                About <FileText className="w-4 h-4" />
-              </Link>
-              <a
-                href="https://github.com/julian-8897"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex h-11 items-center gap-2 rounded-full border border-border px-5 text-sm hover:bg-muted transition-colors"
-                data-testid="link-home-github"
-              >
-                GitHub <Github className="w-4 h-4" />
-              </a>
-            </div>
-          </div>
-        </Reveal>
-      </Section>
-    </div>
+    <a href={href} target="_blank" rel="noopener noreferrer" className={`outbound ${className}`}>
+      {children}<ArrowUpRight size={15} strokeWidth={1.7} aria-hidden="true" />
+    </a>
   );
 }
 
+export default function Home() {
+  return (
+    <div className="modernist">
+      <header className="mo-nav mo-wrap">
+        <a href="#top" className="mo-mark">Julian Chan</a>
+        <nav aria-label="Primary">
+          <a href="#projects">Projects</a>
+          <a href="#research">Research</a>
+          <a href="#profile">Profile</a>
+        </nav>
+        <a href="mailto:julianchan8897@gmail.com" className="mo-email">Email</a>
+      </header>
+
+      <main id="top">
+        <section className="mo-hero mo-wrap">
+          <div className="mo-hero-copy">
+            <span className="mo-role">Research engineer · AI for science</span>
+            <h1>AI for science.<br /><strong>Built and evaluated.</strong></h1>
+            <p>I design, implement and test machine learning systems for scientific problems: differentiable simulation, inverse problems and agents for research.</p>
+            <div className="mo-actions">
+              <a href="#projects">Flagship projects <ArrowRight size={16} aria-hidden="true" /></a>
+              <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><Github size={15} aria-hidden="true" />GitHub</a>
+            </div>
+          </div>
+          <figure className="mo-hero-figure">
+            <img src={MEDIA.hybrid} alt="Held-out turbulence rollout comparing the hybrid closure with the DNS reference and the mechanistic solver" />
+            <figcaption>Hybrid turbulence closure, held-out 500-step rollout</figcaption>
+          </figure>
+        </section>
+
+        <section className="mo-proof mo-wrap" aria-label="Selected evidence">
+          <div><strong>2</strong><span>first-author MNRAS papers</span></div>
+          <div><strong>71.7%</strong><span>lower 500-step error, turbulence closure</span></div>
+          <div><strong>JAX ↔ PyTorch</strong><span>reverse-mode gradients across served components</span></div>
+        </section>
+
+        <section className="mo-work mo-wrap" id="projects">
+          <h2>Flagship projects</h2>
+
+          <article className="mo-lead-project">
+            <div className="mo-lead-copy">
+              <span>AI engineering · agent systems</span>
+              <h3>Research Brief Agent</h3>
+              <p>A streaming FastAPI service that turns a research question into a cited decision memo. Evidence comes first: semantic retrieval into a Qdrant corpus, full-text reading of candidate papers, then a deterministic check that strips ungrounded citations before the memo is written.</p>
+              <p>Every run reports latency, token use and cost, and is traced to Langfuse. The repository ships with 184 unit tests and a 7-case offline quality gate that fails on hallucinated citations.</p>
+              <div className="mo-project-links">
+                <Outbound href={LINKS.agent}>Repository</Outbound>
+                <Outbound href={LINKS.agentEvals}>Evaluation suite</Outbound>
+              </div>
+            </div>
+            <aside className="mo-agent">
+              <span>Run pipeline, from the documented API</span>
+              <div className="mo-agent-steps">
+                <div><b>Retrieve</b><i>Qdrant · SPECTER2</i></div>
+                <div><b>Read</b><i>full text required</i></div>
+                <div><b>Verify</b><i>citations checked</i></div>
+                <div><b>Report</b><i>cost · latency · trace</i></div>
+              </div>
+              <div className="mo-agent-facts">
+                <span>184 unit tests</span>
+                <span>7-case quality gate</span>
+                <span>SSE streaming</span>
+                <span>Docker Compose · Fly</span>
+              </div>
+              <Outbound href={LINKS.agent}>Inspect the system</Outbound>
+            </aside>
+          </article>
+
+          <div className="mo-project-pair">
+            <article className="mo-burgers">
+              <img src={MEDIA.hybrid} alt="Vorticity fields from the DNS reference, the hybrid model and the mechanistic solver" />
+              <div>
+                <span>Scientific ML · differentiable simulation</span>
+                <h3>Hybrid closure for 2D turbulence</h3>
+                <p>A PyTorch closure trained through a JAX spectral solver, with reverse-mode gradients composed across two served Tesseract components. On 32 locked test trajectories the model cuts 500-step rollout error by 71.7% versus the solver alone, against matched baselines and tracked reports.</p>
+                <div className="mo-project-links">
+                  <Outbound href={LINKS.hybridDemo}>Walkthrough</Outbound>
+                  <Outbound href={LINKS.hybrid}>Repository</Outbound>
+                </div>
+              </div>
+            </article>
+
+            <article className="mo-burgers">
+              <img src={MEDIA.burgers} alt="Architecture of the inverse Burgers solver, PINN and posterior components" />
+              <div>
+                <span>Inverse problems · Tesseract</span>
+                <h3>Inverse estimation for the Burgers equation</h3>
+                <p>Recover the viscosity of the Burgers equation from sparse, noisy measurements with three swappable methods: a differentiable solver adjoint, JAX and PyTorch PINNs behind one schema, and an amortised flow-matching posterior with calibration diagnostics.</p>
+                <div className="mo-project-links">
+                  <Outbound href={LINKS.burgers}>Repository</Outbound>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section className="mo-research mo-wrap" id="research">
+          <h2>Research</h2>
+          <article className="mo-paper-feature">
+            <div className="mo-paper-copy">
+              <span>First author · MNRAS 546(3), 2026</span>
+              <h3>Continuous-time modelling of black hole binary evolution with neural ODEs</h3>
+              <p>A parameterised neural ODE learns the orbital evolution of black hole binaries across an ensemble of N-body galaxy-merger simulations. It reproduces held-out trajectories with median fractional errors of order 10⁻² and yields merger timescales consistent with direct simulation within current theoretical uncertainties.</p>
+              <div className="mo-paper-inline-links">
+                <Outbound href={LINKS.neuralOde}>Journal article</Outbound>
+                <Outbound href={LINKS.neuralOdeArxiv}>arXiv</Outbound>
+              </div>
+            </div>
+            <figure>
+              <img src={MEDIA.neuralOde} alt="Neural ODE predictions of orbital evolution and merger timescales against N-body simulation inputs" />
+              <figcaption>Paper figure: predicted orbital evolution and merger timescales against simulation inputs</figcaption>
+            </figure>
+          </article>
+
+          <p className="mo-research-note">Earlier numerical astrophysics</p>
+          <div className="mo-paper-compact">
+            <Outbound href={LINKS.perturber}>
+              <span>First author · MNRAS 550(4)</span>
+              <strong>Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers</strong>
+            </Outbound>
+            <Outbound href={LINKS.convergence}>
+              <span>Co-author · MNRAS 546(1)</span>
+              <strong>Converging on the eccentricity of massive black hole binaries in Galactic mergers</strong>
+            </Outbound>
+          </div>
+          <div className="mo-research-scholar">
+            <Outbound href={LINKS.scholar}>Google Scholar</Outbound>
+          </div>
+        </section>
+
+        <section className="mo-profile mo-wrap" id="profile">
+          <h2>Profile</h2>
+          <div>
+            <p>I am completing a PhD at the University of Surrey, where I study massive black hole binary dynamics with N-body simulations and machine-learning surrogates.</p>
+            <p>I work from research question to evaluated system. The evaluation comes first, the system stays inspectable, and the limitations are reported alongside the results.</p>
+            <div className="mo-stack">Python · PyTorch · JAX · FastAPI · Qdrant · Langfuse · Docker · HPC</div>
+            <div className="mo-availability">Open to AI for science and AI engineering roles.</div>
+            <div className="mo-contact-links">
+              <Outbound href={LINKS.github}>GitHub</Outbound>
+              <Outbound href={LINKS.scholar}>Google Scholar</Outbound>
+              <a href="mailto:julianchan8897@gmail.com"><Mail size={14} aria-hidden="true" />Email</a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      <footer className="mo-footer mo-wrap">
+        <strong>Julian Chan</strong>
+        <span>University of Surrey</span>
+        <a href="mailto:julianchan8897@gmail.com"><Mail size={14} aria-hidden="true" />julianchan8897@gmail.com</a>
+      </footer>
+    </div>
+  );
+}
