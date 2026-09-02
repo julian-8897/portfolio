@@ -46,8 +46,8 @@ export default function Home() {
         <section className="mo-hero mo-wrap">
           <div className="mo-hero-copy">
             <span className="mo-role">Research engineer · AI for science</span>
-            <h1>Machine learning systems for scientific problems.</h1>
-            <p>Differentiable simulation, inverse problems and agents for research, each taken from question to tested system. Finishing a PhD in astrophysics at the University of Surrey.</p>
+            <h1>Machine learning for<br />scientific problems.</h1>
+            <p>Differentiable simulation, inverse problems and agents for research, from question to tested system.</p>
             <div className="mo-actions">
               <a href="#projects">Flagship projects <ArrowRight size={16} aria-hidden="true" /></a>
               <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><Github size={15} aria-hidden="true" />GitHub</a>
@@ -162,7 +162,7 @@ export default function Home() {
         <section className="mo-profile mo-wrap" id="profile">
           <h2>Profile</h2>
           <div>
-            <p>I research massive black hole binary dynamics with N-body simulations and neural surrogates, and I ship the systems that make the results reproducible.</p>
+            <p>PhD candidate in astrophysics at the University of Surrey, researching massive black hole binary dynamics with N-body simulations and neural surrogates.</p>
             <p>Working method: lock the evaluation before optimising, keep the system inspectable, report limitations with the results.</p>
             <div className="mo-stack">Python · PyTorch · JAX · FastAPI · Qdrant · Langfuse · Docker · HPC</div>
             <div className="mo-availability">Open to AI for science and AI engineering roles.</div>
