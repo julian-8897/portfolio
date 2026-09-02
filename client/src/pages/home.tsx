@@ -46,7 +46,11 @@ export default function Home() {
         <section className="mo-hero mo-wrap">
           <div className="mo-hero-copy">
             <span className="mo-role">Research engineer · AI for science</span>
-            <h1>Machine learning for<br />scientific problems.</h1>
+            <h1>
+              <span className="mo-line"><b style={{ animationDelay: "0.15s" }}>Machine learning</b></span>
+              <span className="mo-line"><b style={{ animationDelay: "0.27s" }}>for scientific</b></span>
+              <span className="mo-line"><b style={{ animationDelay: "0.39s" }}>problems.</b></span>
+            </h1>
             <p>Differentiable simulation, inverse problems and agents for research, from question to tested system.</p>
             <div className="mo-actions">
               <a href="#projects">Flagship projects <ArrowRight size={16} aria-hidden="true" /></a>
