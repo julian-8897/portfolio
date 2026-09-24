@@ -13,6 +13,7 @@ const LINKS = {
   convergence: "https://doi.org/10.1093/mnras/stag026",
   github: "https://github.com/julian-8897",
   scholar: "https://scholar.google.com/citations?hl=en&user=9YnAVL4AAAAJ",
+  cv: "/julian_chan_ai_cv.pdf",
 };
 
 const MEDIA = {
@@ -45,22 +46,31 @@ export default function Home() {
       <main id="top">
         <section className="mo-hero mo-wrap">
           <div className="mo-hero-copy">
-            <span className="mo-role">Research engineer · AI for science</span>
+            <span className="mo-role">AI research engineer</span>
             <h1>
-              <span className="mo-line"><b style={{ animationDelay: "0.15s" }}>Machine learning</b></span>
-              <span className="mo-line"><b style={{ animationDelay: "0.27s" }}>for scientific</b></span>
-              <span className="mo-line"><b style={{ animationDelay: "0.39s" }}>problems.</b></span>
+              <span className="mo-line"><b style={{ animationDelay: "0.15s" }}>I build agents</b></span>
+              <span className="mo-line"><b style={{ animationDelay: "0.27s" }}>and ML systems</b></span>
+              <span className="mo-line"><b style={{ animationDelay: "0.39s" }}>with evidence.</b></span>
             </h1>
-            <p>Differentiable simulation, inverse problems and agents for research, from question to tested system.</p>
+            <p>Building retrieval, evaluation and ML software that makes technical decisions inspectable. Scientific ML is one demanding testbed.</p>
             <div className="mo-actions">
               <a href="#projects">Flagship projects <ArrowRight size={16} aria-hidden="true" /></a>
               <a href={LINKS.github} target="_blank" rel="noopener noreferrer"><Github size={15} aria-hidden="true" />GitHub</a>
+              <a href={LINKS.cv} target="_blank" rel="noopener noreferrer">CV <ArrowUpRight size={15} aria-hidden="true" /></a>
             </div>
           </div>
-          <figure className="mo-hero-figure">
-            <img src={MEDIA.hybrid} alt="Held-out turbulence rollout comparing the hybrid closure with the DNS reference and the mechanistic solver" />
-            <figcaption>Hybrid turbulence closure, held-out 500-step rollout</figcaption>
-          </figure>
+          <div className="mo-hero-system" aria-label="Research Brief Agent workflow">
+            <span className="mo-system-label">Research Brief Agent · built system</span>
+            <strong>From question to cited decision</strong>
+            <div className="mo-system-flow">
+              <span>Retrieve papers</span>
+              <span>Read full text</span>
+              <span>Check citations</span>
+              <span>Trace the run</span>
+            </div>
+            <p>FastAPI · Qdrant · Langfuse</p>
+            <Outbound href={LINKS.agent}>Explore the agent</Outbound>
+          </div>
         </section>
 
         <section className="mo-proof mo-wrap" aria-label="Selected evidence">
@@ -77,7 +87,7 @@ export default function Home() {
               <span>AI engineering · agent systems</span>
               <h3>Research Brief Agent</h3>
               <p>Streaming FastAPI service that turns a research question into a cited decision memo. Qdrant retrieval, full-text reading before synthesis, deterministic citation checks, and per-run latency, token use and cost.</p>
-              <p>184 unit tests and a 7-case quality gate run in CI, with tracing to Langfuse.</p>
+              <p>184 tests and a 7-case offline gate check retrieval and response contracts on synthetic fixtures. Live answer quality remains a separate evaluation task.</p>
               <div className="mo-project-links">
                 <Outbound href={LINKS.agent}>Repository</Outbound>
                 <Outbound href={LINKS.agentEvals}>Evaluation suite</Outbound>
@@ -93,9 +103,9 @@ export default function Home() {
               </div>
               <div className="mo-agent-facts">
                 <span>184 unit tests</span>
-                <span>7-case quality gate</span>
+                <span>7 fixture cases</span>
                 <span>SSE streaming</span>
-                <span>Docker Compose · Fly</span>
+                <span>Docker Compose</span>
               </div>
               <Outbound href={LINKS.agent}>Inspect the system</Outbound>
             </aside>
@@ -107,7 +117,7 @@ export default function Home() {
               <div>
                 <span>Scientific ML · differentiable simulation</span>
                 <h3>Hybrid closure for 2D turbulence</h3>
-                <p>A PyTorch closure trained through a JAX spectral solver, with reverse-mode gradients composed across two served Tesseract components. On 32 locked test trajectories it cuts 500-step rollout error by 71.7% versus the solver alone.</p>
+                <p>A PyTorch closure trained through a JAX spectral solver, with reverse-mode gradients across two served components. On 32 locked test trajectories it cuts 500-step rollout error by 71.7% versus the solver alone. The work shows how to train a learned component through an existing simulator.</p>
                 <div className="mo-project-links">
                   <Outbound href={LINKS.hybridDemo}>Walkthrough</Outbound>
                   <Outbound href={LINKS.hybrid}>Repository</Outbound>
@@ -120,7 +130,7 @@ export default function Home() {
               <div>
                 <span>Inverse problems · Tesseract</span>
                 <h3>Inverse estimation for the Burgers equation</h3>
-                <p>Recovers the viscosity of the Burgers equation from sparse, noisy measurements with three methods: a differentiable solver adjoint, JAX and PyTorch PINNs behind one schema, and an amortised flow-matching posterior.</p>
+                <p>Built a solver adjoint, interchangeable JAX and PyTorch PINNs, and a flow-matching posterior to infer parameters from sparse, noisy observations. The PINN backends were compared on the same synthetic observations; posterior diagnostics found the viscosity uncertainty too narrow. The shared interface makes model choices testable under one setup.</p>
                 <div className="mo-project-links">
                   <Outbound href={LINKS.burgers}>Repository</Outbound>
                 </div>
@@ -135,7 +145,7 @@ export default function Home() {
             <div className="mo-paper-copy">
               <span>First author · MNRAS 546(3), 2026</span>
               <h3>Continuous-time modelling of black hole binary evolution with neural ODEs</h3>
-              <p>A parameterised neural ODE trained on an ensemble of N-body galaxy-merger simulations. Reproduces held-out orbital trajectories with median fractional errors of order 10⁻², and merger timescales consistent with direct simulation.</p>
+              <p>Built a parameterised neural ODE from N-body galaxy-merger simulations. On held-out trajectories it reaches median fractional errors of order 10⁻², with merger timescales consistent with direct simulation. It shows how a surrogate can be judged against the original simulator.</p>
               <div className="mo-paper-inline-links">
                 <Outbound href={LINKS.neuralOde}>Journal article</Outbound>
                 <Outbound href={LINKS.neuralOdeArxiv}>arXiv</Outbound>
@@ -166,13 +176,14 @@ export default function Home() {
         <section className="mo-profile mo-wrap" id="profile">
           <h2>Profile</h2>
           <div>
-            <p>PhD candidate in astrophysics at the University of Surrey, researching massive black hole binary dynamics with N-body simulations and neural surrogates.</p>
-            <p>Working method: lock the evaluation before optimising, keep the system inspectable, report limitations with the results.</p>
+            <p>AI research engineer building agent services, ML systems and evaluation workflows. I work from a clear decision or scientific question through implementation, tests and evidence.</p>
+            <p>My astrophysics PhD at the University of Surrey uses N-body simulations and neural surrogates. It gives me a rigorous setting for testing models against known physical behaviour.</p>
             <div className="mo-stack">Python · PyTorch · JAX · FastAPI · Qdrant · Langfuse · Docker · HPC</div>
-            <div className="mo-availability">Open to AI for science and AI engineering roles.</div>
+            <div className="mo-availability">Open to AI research engineering, applied AI and ML engineering roles.</div>
             <div className="mo-contact-links">
               <Outbound href={LINKS.github}>GitHub</Outbound>
               <Outbound href={LINKS.scholar}>Google Scholar</Outbound>
+              <Outbound href={LINKS.cv}>CV</Outbound>
               <a href="mailto:julianchan8897@gmail.com"><Mail size={14} aria-hidden="true" />Email</a>
             </div>
           </div>
