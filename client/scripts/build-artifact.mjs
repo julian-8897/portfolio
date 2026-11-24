@@ -10,9 +10,14 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { createServer } from "vite";
 
 const outDir = resolve(process.argv[2] ?? "artifact-dist");
-const vite = await createServer({ server: { middlewareMode: true }, appType: "custom", logLevel: "error" });
+const vite = await createServer({
+  server: { middlewareMode: true },
+  appType: "custom",
+  logLevel: "error",
+  optimizeDeps: { noDiscovery: true, entries: [] },
+});
 try {
-  const { default: Site } = await vite.ssrLoadModule("/src/site/Site.tsx");
+  const { default: Site, pauseForReducedMotion } = await vite.ssrLoadModule("/src/site/Site.tsx");
   const markup = renderToStaticMarkup(React.createElement(Site, { showCv: false }));
   const css = readFileSync(resolve("src/site/site.css"), "utf8");
   const page = `<title>Julian Chan</title>
@@ -24,10 +29,12 @@ html { scroll-behavior: smooth; }
 ${css}
 </style>
 ${markup}
+<script>(${pauseForReducedMotion.toString()})();</script>
 `;
   mkdirSync(outDir, { recursive: true });
   writeFileSync(resolve(outDir, "index.html"), page);
   cpSync(resolve("public/figures"), resolve(outDir, "figures"), { recursive: true });
+  cpSync(resolve("public/media"), resolve(outDir, "media"), { recursive: true });
   console.log(`wrote ${outDir}/index.html (${page.length} bytes)`);
 } finally {
   await vite.close();

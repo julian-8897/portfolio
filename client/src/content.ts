@@ -112,11 +112,12 @@ export const themes: Theme[] = [
           "On 32 held-out trajectories of freely decaying two-dimensional turbulence, training through the solver reduced 500-step vorticity error by 71.7% relative to the solver alone and by 15.7% relative to the separately trained network.",
         implication: "Even with the same network, the training objective determines the trajectory it produces.",
         figure: {
-          src: "figures/hybrid-rollout-fields.png",
-          alt: "Vorticity fields after a 500-step rollout from filtered DNS, the hybrid model and the coarse solver, with a map of where the hybrid sits closer to the reference",
-          caption: "Vorticity ω after 500 steps on a held-out trajectory. The correction map shows where the hybrid (blue) or the solver alone (orange) is closer to filtered DNS.",
-          aspect: "885 / 730",
+          src: "media/closure_poster.jpg",
+          alt: "Animation of a held-out turbulence rollout. Top: filtered DNS vorticity beside the hybrid model's free rollout. Bottom: the per-step correction implied by DNS beside the correction the CNN predicts, which show matching small-scale patterns.",
+          caption: "A validation trajectory over 500 steps. Top: filtered DNS and the hybrid, run freely from the same initial state. Bottom: the correction the CNN adds at each step beside the correction implied by filtered DNS for the same coarse step.",
+          aspect: "1440 / 1560",
           width: "mid",
+          video: { mp4: "media/closure.mp4", webm: "media/closure.webm" },
         },
         links: [
           { label: "Walkthrough", href: "https://julian-8897.github.io/tesseract-hybrid-closure/" },
@@ -138,11 +139,11 @@ export const themes: Theme[] = [
         implication:
           "Checking uncertainty for the physical parameter of interest can reveal overconfidence that a joint diagnostic misses.",
         figure: {
-          src: "figures/burgers-posterior.png",
-          alt: "Corner plot of the flow-matching posterior over viscosity, amplitude and phase of the Burgers initial condition, with ground truth marked",
-          caption: "Flow-matching posterior over viscosity ν and the initial-condition amplitude and phase. Dashed lines mark the true values.",
-          aspect: "2010 / 1848",
-          width: "narrow",
+          src: "media/burgers_poster.jpg",
+          alt: "Animation of the Burgers inverse problem. A velocity profile steepens into a front and diffuses, with a narrow predictive band around the truth; below, a space-time map fills in as sensor readings appear; right, the viscosity posterior with the true value marked.",
+          caption: "Top: the velocity front steepening and diffusing, with the 5th to 95th percentile band from 256 posterior draws pushed through the solver. Below: the space-time field with the 64 noisy sensor readings. Right: the viscosity posterior against the true value (dashed).",
+          aspect: "1440 / 850",
+          video: { mp4: "media/burgers.mp4", webm: "media/burgers.webm" },
         },
         links: [{ label: "Code", href: "https://github.com/julian-8897/tesseract-pinn-inverse-burgers" }],
       },

@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { earlierWork, notes, openProblems, person, publications, software, themes, type Project } from "@/content";
 
 function Ext({ href, children }: { href: string; children: React.ReactNode }) {
@@ -93,7 +94,22 @@ function Authors({ text }: { text: string }) {
   );
 }
 
+// Looping figures stop on their poster frame when the viewer prefers reduced motion.
+// Kept dependency-free so the artifact build can inline it as a script.
+export function pauseForReducedMotion() {
+  if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll("video[autoplay]").forEach((v) => {
+    const video = v as HTMLVideoElement;
+    video.removeAttribute("autoplay");
+    video.pause();
+    video.currentTime = 0;
+  });
+}
+
 export default function Site({ showCv = true }: { showCv?: boolean }) {
+  useEffect(() => {
+    pauseForReducedMotion();
+  }, []);
   return (
     <div className="site">
       <div className="s-wrap">
