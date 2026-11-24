@@ -1,4 +1,4 @@
-import { notes, openProblems, person, publications, software, themes, type Project } from "@/content";
+import { earlierWork, notes, openProblems, person, publications, software, themes, type Project } from "@/content";
 
 function Ext({ href, children }: { href: string; children: React.ReactNode }) {
   const external = href.startsWith("http");
@@ -40,7 +40,23 @@ function ProjectEntry({ p }: { p: Project }) {
         </p>
         {fig && (
           <figure className={`s-fig${fig.width ? ` s-fig--${fig.width}` : ""}`}>
-            <img src={fig.src} alt={fig.alt} loading="lazy" style={{ aspectRatio: fig.aspect }} />
+            {fig.video ? (
+              <video
+                autoPlay
+                muted
+                loop
+                playsInline
+                preload="metadata"
+                poster={fig.src}
+                aria-label={fig.alt}
+                style={{ aspectRatio: fig.aspect }}
+              >
+                <source src={fig.video.webm} type="video/webm" />
+                <source src={fig.video.mp4} type="video/mp4" />
+              </video>
+            ) : (
+              <img src={fig.src} alt={fig.alt} loading="lazy" style={{ aspectRatio: fig.aspect }} />
+            )}
             <figcaption>
               <b>Fig. {n}.</b> {fig.caption}
             </figcaption>
@@ -89,6 +105,10 @@ export default function Site({ showCv = true }: { showCv?: boolean }) {
           <div className="s-main">
             <h1>{person.name}</h1>
             <p className="s-statement">{person.statement}</p>
+            <p className="s-latest">
+              Latest: <a href="#llm-fno">Prior or Feedback? What an LLM Uses When Adapting Neural Operators</a>, NeurIPS 2026
+              AI4Science Workshop.
+            </p>
             <div className="s-contact">
               <span className="s-email">{person.email}</span>
               <Ext href={person.links.github}>GitHub</Ext>
@@ -125,6 +145,31 @@ export default function Site({ showCv = true }: { showCv?: boolean }) {
               ))}
             </div>
           ))}
+          <div className="s-theme" id="earlier">
+            <div className="s-row">
+              <span />
+              <h3 className="s-main s-earlier-title">Earlier work</h3>
+            </div>
+            {earlierWork.map((w) => (
+              <div key={w.title} className="s-row s-earlier">
+                <aside className="s-margin">
+                  <span>{w.year}</span>
+                  <span>{w.venue}</span>
+                </aside>
+                <div className="s-main">
+                  <p>
+                    <b>{w.title}.</b> {w.line}{" "}
+                    {w.links.map((l, i) => (
+                      <span key={l.href}>
+                        {i > 0 && " · "}
+                        <Ext href={l.href}>{l.label}</Ext>
+                      </span>
+                    ))}
+                  </p>
+                </div>
+              </div>
+            ))}
+          </div>
         </section>
 
         <Section id="notes" title="Notes">

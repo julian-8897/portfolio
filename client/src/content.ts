@@ -22,7 +22,14 @@ export const person = {
 };
 
 export type Link = { label: string; href: string };
-export type Figure = { src: string; alt: string; caption: string; aspect: string; width?: "narrow" | "mid" };
+export type Figure = {
+  src: string; // image, or the poster frame when video is set
+  alt: string;
+  caption: string;
+  aspect: string;
+  width?: "narrow" | "mid";
+  video?: { mp4: string; webm: string };
+};
 
 export type Project = {
   id: string;
@@ -42,35 +49,47 @@ export type Theme = { id: string; title: string; blurb: string; projects: Projec
 
 export const themes: Theme[] = [
   {
-    id: "surrogates",
-    title: "Learned surrogates for dynamical systems",
+    id: "agents",
+    title: "Agents for scientific experimentation",
     blurb:
-      "When can a learned model stand in for an expensive simulation and still recover the physical quantity that motivated the calculation?",
+      "What evidence shapes an agent's next decision, whether it is choosing the next experiment or recommending a method from the literature?",
     projects: [
       {
-        id: "neural-ode",
-        title: "Continuous-Time Modelling of Black Hole Binary Evolution with Neural ODEs",
+        id: "llm-fno",
+        title: "Prior or Feedback? What an LLM Uses When Adapting Neural Operators",
         year: "2026",
-        venue: "MNRAS 546(3)",
-        role: "First author",
+        venue: "NeurIPS 2026 AI4Science Workshop",
+        role: "Equal contribution",
         question:
-          "Can we estimate how long supermassive black hole pairs take to merge, a quantity needed to interpret the gravitational-wave background, without simulating every stellar encounter?",
+          "When an LLM chooses a good experiment, how much can we attribute to what it knew before seeing any results?",
         approach:
-          "We trained a neural ODE on galaxy merger simulations, conditioning the orbital dynamics on the initial orbit shape and the number of particles in the simulation.",
+          "We gave it a fixed trial budget to adapt Fourier neural operators across PDE regimes, then varied the task description and the feedback it saw.",
         finding:
-          "It reproduced held-out orbital trajectories, with modest generalisation to a partially unseen higher-resolution case. When we modelled the later orbital shrinking by stellar encounters and gravitational radiation, merger times agreed within theoretical uncertainties whether we used the surrogate or direct simulation inputs.",
-        implication: "Agreement on merger time gives the surrogate a test tied to its astrophysical use.",
+          "After 20 trials it reached lower held-out error than random search in all 36 matched runs and than Bayesian optimisation (TPE) in 35 of 36. Its first learning rate shifted with the PDE description, and reassigning validation scores among completed trials changed its next proposal in every trace tested.",
+        implication: "These interventions separate a useful starting choice from a response to experimental evidence.",
         figure: {
-          src: "figures/neural-ode-timescales.png",
-          alt: "Eccentricity and semi-major axis against time for N-body runs and neural ODE predictions at three initial eccentricities and three particle resolutions",
-          caption: "Orbital eccentricity e and semi-major axis a over time: N-body (solid) against neural ODE (dashed), at three initial eccentricities and three particle counts N.",
-          aspect: "1265 / 873",
-          width: "mid",
+          src: "figures/llm-fno-interventions.png",
+          alt: "Two panels. Left: share of cold-start learning-rate proposals at each value under advection text, Burgers text and no text. Right: distribution of the action-distance gap between score reassignment and a notation control across 18 traces, all above zero.",
+          caption: "Two controlled interventions. (a) The PDE description alone shifts the proposed learning rate before any feedback. (b) Reassigning validation scores among completed trials moves the next proposal in all 18 traces, relative to a rewrite that preserves the scores.",
+          aspect: "1611 / 627",
         },
         links: [
-          { label: "Journal", href: "https://doi.org/10.1093/mnras/stag135" },
-          { label: "arXiv", href: "https://arxiv.org/abs/2601.13019" },
+          { label: "arXiv", href: "https://arxiv.org/abs/2610.12325" },
+          { label: "Code", href: "https://github.com/julian-8897/budgeted-search-ai4science" },
         ],
+      },
+      {
+        id: "research-brief-agent",
+        title: "Tracing a research brief back to its sources",
+        year: "2026",
+        question:
+          "When an agent recommends a method from the literature, how can a researcher tell which papers it actually consulted?",
+        approach:
+          "I built an agent that retrieves papers, reads promising candidates in full where possible and records when that reading fails. Before returning the brief, it removes citation markers that point outside the retrieved evidence.",
+        finding:
+          "The agent passed offline checks for retrieval, citation handling and uncertainty reporting on a synthetic corpus. Full-text use is measured separately in live runs.",
+        implication: "A reader can trace a recommendation to its sources and judge whether the cited work supports it.",
+        links: [{ label: "Code", href: "https://github.com/julian-8897/research-brief-agent" }],
       },
     ],
   },
@@ -128,51 +147,19 @@ export const themes: Theme[] = [
         links: [{ label: "Code", href: "https://github.com/julian-8897/tesseract-pinn-inverse-burgers" }],
       },
     ],
-  },
+  }
+
+];
+
+export const earlierWork = [
   {
-    id: "agents",
-    title: "Agents for scientific experimentation",
-    blurb:
-      "What evidence shapes an agent's next decision, whether it is choosing the next experiment or recommending a method from the literature?",
-    projects: [
-      {
-        id: "llm-fno",
-        title: "Prior or Feedback? What an LLM Uses When Adapting Neural Operators",
-        year: "2026",
-        venue: "NeurIPS 2026 AI4Science Workshop",
-        role: "Equal contribution",
-        question:
-          "When an LLM chooses a good experiment, how much can we attribute to what it knew before seeing any results?",
-        approach:
-          "We gave it a fixed trial budget to adapt Fourier neural operators across PDE regimes, then varied the task description and the feedback it saw.",
-        finding:
-          "It beat random search and Bayesian optimisation on held-out error in nearly every matched comparison. Its initial learning rate shifted with the PDE description, and reassigning validation scores among completed trials changed its next proposal in every case tested.",
-        implication: "These interventions separate a useful starting choice from a response to experimental evidence.",
-        figure: {
-          src: "figures/llm-fno-method.png",
-          alt: "Method overview: regime shift between PDE families, the budgeted FNO adaptation loop with an LLM policy, and the controlled policy interventions",
-          caption: "Budgeted adaptation of a pretrained FNO (B = 20 trials) and the three controlled interventions on the policy's inputs.",
-          aspect: "589 / 539",
-          width: "narrow",
-        },
-        links: [
-          { label: "arXiv", href: "https://arxiv.org/abs/2610.12325" },
-          { label: "Code", href: "https://github.com/julian-8897/budgeted-search-ai4science" },
-        ],
-      },
-      {
-        id: "research-brief-agent",
-        title: "Tracing a research brief back to its sources",
-        year: "2026",
-        question:
-          "When an agent recommends a method from the literature, how can a researcher tell which papers it actually consulted?",
-        approach:
-          "I built an agent that retrieves papers, reads promising candidates in full where possible and records when that reading fails. Before returning the brief, it removes citation markers that point outside the retrieved evidence.",
-        finding:
-          "The agent passed offline checks for retrieval, citation handling and uncertainty reporting on a synthetic corpus. Full-text use is measured separately in live runs.",
-        implication: "A reader can trace a recommendation to its sources and judge whether the cited work supports it.",
-        links: [{ label: "Code", href: "https://github.com/julian-8897/research-brief-agent" }],
-      },
+    year: "2026",
+    venue: "MNRAS 546(3)",
+    title: "Continuous-time modelling of black hole binary evolution with neural ODEs",
+    line: "A neural ODE surrogate for the orbital evolution of supermassive black hole binaries, trained on N-body galaxy-merger simulations and checked against direct simulation on merger timescales.",
+    links: [
+      { label: "Journal", href: "https://doi.org/10.1093/mnras/stag135" },
+      { label: "arXiv", href: "https://arxiv.org/abs/2601.13019" },
     ],
   },
 ];
@@ -194,10 +181,9 @@ export const software = [
 ];
 
 export const openProblems = [
-  "How far in particle resolution can a neural ODE generalise while preserving the merger times inferred from direct simulations?",
+  "Under a fixed trial budget, when does an agent's response to validation feedback actually improve its final choice?",
   "Does a closure trained on freely decaying turbulence keep its long-rollout accuracy when the flow is continuously forced?",
   "Can a few gradient steps through the solver improve the calibration of an amortised viscosity posterior?",
-  "Under a fixed trial budget, when does an agent's response to validation feedback actually improve its final choice?",
 ];
 
 export type Publication = { authors: string; title: string; venue: string; year: string; href: string; note?: string };

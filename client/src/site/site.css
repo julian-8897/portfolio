@@ -78,6 +78,8 @@ body { background: var(--bg); color: var(--ink); }
 .s-head { padding-bottom: 3rem; }
 .s-head h1 { font-size: clamp(2.1rem, 4vw, 2.9rem); font-weight: 600; letter-spacing: -0.02em; line-height: 1.05; margin: 0 0 1rem; text-wrap: balance; }
 .s-statement { font-size: 1.2rem; line-height: 1.5; margin: 0 0 1.4rem; max-width: 40rem; text-wrap: pretty; }
+.s-latest { color: var(--muted); font-size: 0.92rem; margin: -0.6rem 0 1.2rem; max-width: 40rem; }
+.s-latest a { color: var(--ink); }
 .s-contact { display: flex; flex-wrap: wrap; font-family: var(--mono); font-size: 0.82rem; gap: 0.4rem 1.4rem; }
 .s-email { user-select: all; }
 .s-nav { display: flex; flex-wrap: wrap; font-size: 0.9rem; gap: 0.3rem 1.2rem; margin-top: 2.2rem; }
@@ -99,9 +101,14 @@ body { background: var(--bg); color: var(--ink); }
 .s-mlinks { display: flex; flex-direction: column; gap: 0.15rem; margin-top: 0.45rem; }
 
 .s-fig { margin: 1.4rem 0 0; }
-.s-fig img { background: var(--plate); border: 1px solid var(--rule); display: block; height: auto; max-width: 100%; object-fit: contain; width: 100%; }
+.s-fig img, .s-fig video { background: var(--plate); border: 1px solid var(--rule); display: block; height: auto; max-width: 100%; object-fit: contain; width: 100%; }
 .s-fig--narrow { max-width: 30rem; }
 .s-fig--mid { max-width: 36rem; }
+
+.s-earlier-title { font-size: 1rem !important; color: var(--muted); }
+.s-earlier { margin-top: 0.8rem; }
+.s-earlier p { font-size: 0.95rem; margin: 0; }
+.s-earlier b { font-weight: 600; }
 .s-fig figcaption { color: var(--muted); font-size: 0.85rem; margin-top: 0.55rem; }
 .s-fig figcaption b { color: var(--ink); font-weight: 600; }
 
