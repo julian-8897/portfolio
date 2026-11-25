@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import AsciiAi from "./AsciiAi";
 import {
   astrophysics, featuredPaper, interests, person, researchBrief, simulationProjects,
   type Figure, type Link, type SimulationProject,
@@ -107,7 +108,7 @@ export default function Site({ showCv = true }: { showCv?: boolean }) {
         <main>
           <section className="s-hero" aria-labelledby="role">
             <h1 id="role">
-              <span>AI for Science{" "}</span>Research Engineer
+              <span className="s-hero-line"><AsciiAi />{" for Science "}</span>Research Engineer
             </h1>
             <p>{person.statement}</p>
             <div className="s-actions">
