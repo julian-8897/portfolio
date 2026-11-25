@@ -1,18 +1,18 @@
-// Site copy. Narratives were drafted by Codex (gpt-6.2-astra, medium) from the
-// GitHub profile README, the arXiv abstracts and the project READMEs, then
-// checked against those sources. Figure paths are relative so the same markup
-// works on the site root and in the published artifact.
+export type Link = { label: string; href: string };
+
+export type Figure = {
+  src: string;
+  alt: string;
+  caption: string;
+  width: number;
+  height: number;
+  video?: { mp4: string; webm: string };
+};
 
 export const person = {
   name: "Julian Chan",
   email: "julianchan8897@gmail.com",
-  statement:
-    "I build learned models of dynamical systems, and the experiments that test their predictions, their uncertainties and the agents that tune them.",
-  about: [
-    "I'm a final-year astrophysics PhD researcher at the University of Surrey, where I use N-body simulations to study how pairs of supermassive black holes evolve. A question from that work, whether a learned model can recover the time to merger, connects it to scientific machine learning.",
-    "I want to build models and design experiments like these as a research engineer in AI for Science.",
-  ],
-  stack: ["Python", "PyTorch", "JAX", "NumPy", "SciPy", "Docker", "HPC (SLURM)"],
+  statement: "I build neural surrogates for physical systems and test how AI agents make decisions in scientific experiments.",
   links: {
     github: "https://github.com/julian-8897",
     scholar: "https://scholar.google.com/citations?hl=en&user=9YnAVL4AAAAJ",
@@ -21,202 +21,109 @@ export const person = {
   },
 };
 
-export type Link = { label: string; href: string };
-export type Figure = {
-  src: string; // image, or the poster frame when video is set
-  alt: string;
-  caption: string;
-  aspect: string;
-  width?: "narrow" | "mid";
-  video?: { mp4: string; webm: string };
+export const featuredPaper = {
+  title: "Prior or Feedback? What an LLM Uses When Adapting Neural Operators",
+  venue: "NeurIPS 2026 AI4Science Workshop",
+  summary: "We gave an LLM 20 trials to adapt a Fourier neural operator to a new PDE regime. We then changed the task description and the validation scores separately to see what shaped its next choice.",
+  finding: "The PDE description shifted its first choice of learning rate. Reassigning validation scores changed the next proposal in all 18 traces tested.",
+  figure: {
+    src: "figures/llm-fno-workflow.png",
+    alt: "Figure 1 shows the Burgers and advection regime shifts, the 20-trial propose, fine-tune and validate loop, and the separate interventions on the PDE description and validation history.",
+    caption: "Figure 1 from the paper. The adaptation loop and the two interventions on its inputs.",
+    width: 1471,
+    height: 1348,
+  },
+  links: [
+    { label: "Read the paper", href: "https://arxiv.org/abs/2610.12325" },
+    { label: "Code", href: "https://github.com/julian-8897/budgeted-search-ai4science" },
+  ],
 };
 
-export type Project = {
+export type SimulationProject = {
   id: string;
+  category: string;
   title: string;
-  year: string;
-  venue?: string;
-  role?: string;
-  question: string;
-  approach: string;
+  context: string;
+  summary: string;
   finding: string;
-  implication: string;
-  figure?: Figure;
+  figure: Figure;
   links: Link[];
 };
 
-export type Theme = { id: string; title: string; blurb: string; projects: Project[] };
-
-export const themes: Theme[] = [
+export const simulationProjects: SimulationProject[] = [
   {
-    id: "agents",
-    title: "Agents for scientific experimentation",
-    blurb:
-      "What evidence shapes an agent's next decision, whether it is choosing the next experiment or recommending a method from the literature?",
-    projects: [
-      {
-        id: "llm-fno",
-        title: "Prior or Feedback? What an LLM Uses When Adapting Neural Operators",
-        year: "2026",
-        venue: "NeurIPS 2026 AI4Science Workshop",
-        role: "Equal contribution",
-        question:
-          "When an LLM chooses a good experiment, how much can we attribute to what it knew before seeing any results?",
-        approach:
-          "We gave it a fixed trial budget to adapt Fourier neural operators across PDE regimes, then varied the task description and the feedback it saw.",
-        finding:
-          "After 20 trials it reached lower held-out error than random search in all 36 matched runs and than Bayesian optimisation (TPE) in 35 of 36. Its first learning rate shifted with the PDE description, and reassigning validation scores among completed trials changed its next proposal in every trace tested.",
-        implication: "These interventions separate a useful starting choice from a response to experimental evidence.",
-        figure: {
-          src: "figures/llm-fno-interventions.png",
-          alt: "Two panels. Left: share of cold-start learning-rate proposals at each value under advection text, Burgers text and no text. Right: distribution of the action-distance gap between score reassignment and a notation control across 18 traces, all above zero.",
-          caption: "Two controlled interventions. (a) The PDE description alone shifts the proposed learning rate before any feedback. (b) Reassigning validation scores among completed trials moves the next proposal in all 18 traces, relative to a rewrite that preserves the scores.",
-          aspect: "1611 / 627",
-        },
-        links: [
-          { label: "arXiv", href: "https://arxiv.org/abs/2610.12325" },
-          { label: "Code", href: "https://github.com/julian-8897/budgeted-search-ai4science" },
-        ],
-      },
-      {
-        id: "research-brief-agent",
-        title: "Tracing a research brief back to its sources",
-        year: "2026",
-        question:
-          "When an agent recommends a method from the literature, how can a researcher tell which papers it actually consulted?",
-        approach:
-          "I built an agent that retrieves papers, reads promising candidates in full where possible and records when that reading fails. Before returning the brief, it removes citation markers that point outside the retrieved evidence.",
-        finding:
-          "The agent passed offline checks for retrieval, citation handling and uncertainty reporting on a synthetic corpus. Full-text use is measured separately in live runs.",
-        implication: "A reader can trace a recommendation to its sources and judge whether the cited work supports it.",
-        links: [{ label: "Code", href: "https://github.com/julian-8897/research-brief-agent" }],
-      },
-    ],
-  },
-  {
-    id: "differentiable",
-    title: "Differentiable simulation and inverse problems",
-    blurb:
-      "Can training through a solver improve predictions over long trajectories, and when the solver is used to infer physical parameters from sparse data, how well can the uncertainty be quantified?",
-    projects: [
-      {
-        id: "hybrid-closure",
-        title: "Training a turbulence closure through the solver",
-        year: "2026",
-        venue: "Tesseract Hackathon 2026",
-        question:
-          "Can a coarse turbulence simulation predict how vortices evolve when its grid cannot resolve the smaller scales of motion?",
-        approach:
-          "I trained a neural correction through a differentiable spectral solver, so that training penalised errors as they accumulated along a trajectory, and compared it with the same network trained on individual corrections.",
-        finding:
-          "On 32 held-out trajectories of freely decaying two-dimensional turbulence, training through the solver reduced 500-step vorticity error by 71.7% relative to the solver alone and by 15.7% relative to the separately trained network.",
-        implication: "Even with the same network, the training objective determines the trajectory it produces.",
-        figure: {
-          src: "media/closure_poster.jpg",
-          alt: "Animation of a held-out turbulence rollout. Top: filtered DNS vorticity beside the hybrid model's free rollout. Bottom: the per-step correction implied by DNS beside the correction the CNN predicts, which show matching small-scale patterns.",
-          caption: "A validation trajectory over 500 steps. Top: filtered DNS and the hybrid, run freely from the same initial state. Bottom: the correction the CNN adds at each step beside the correction implied by filtered DNS for the same coarse step.",
-          aspect: "1440 / 1560",
-          width: "mid",
-          video: { mp4: "media/closure.mp4", webm: "media/closure.webm" },
-        },
-        links: [
-          { label: "Walkthrough", href: "https://julian-8897.github.io/tesseract-hybrid-closure/" },
-          { label: "Code", href: "https://github.com/julian-8897/tesseract-hybrid-closure" },
-        ],
-      },
-      {
-        id: "inverse-burgers",
-        title: "How well can sparse observations constrain viscosity?",
-        year: "2025",
-        venue: "Tesseract Hackathon 2025, Honourable Mention",
-        role: "Presented at the Tesseract Forum 2026",
-        question:
-          "How precisely can viscosity be inferred from sparse, noisy observations of a flow whose initial conditions are also uncertain?",
-        approach:
-          "I used the Burgers equation to compare a differentiable solver with a physics-informed neural network for estimating viscosity, then trained a flow-matching model to infer viscosity and the initial conditions jointly.",
-        finding:
-          "The solver gave the more accurate viscosity estimate at lower cost per optimisation step. The posterior passed a joint coverage check, yet simulation-based calibration showed that its viscosity marginal was too narrow.",
-        implication:
-          "Checking uncertainty for the physical parameter of interest can reveal overconfidence that a joint diagnostic misses.",
-        figure: {
-          src: "media/burgers_poster.jpg",
-          alt: "Animation of the Burgers inverse problem. A velocity profile steepens into a front and diffuses, with a narrow predictive band around the truth; below, a space-time map fills in as sensor readings appear; right, the viscosity posterior with the true value marked.",
-          caption: "Top: the velocity front steepening and diffusing, with the 5th to 95th percentile band from 256 posterior draws pushed through the solver. Below: the space-time field with the 64 noisy sensor readings. Right: the viscosity posterior against the true value (dashed).",
-          aspect: "1440 / 850",
-          video: { mp4: "media/burgers.mp4", webm: "media/burgers.webm" },
-        },
-        links: [{ label: "Code", href: "https://github.com/julian-8897/tesseract-pinn-inverse-burgers" }],
-      },
-    ],
-  }
-
-];
-
-export const earlierWork = [
-  {
-    year: "2026",
-    venue: "MNRAS 546(3)",
-    title: "Continuous-time modelling of black hole binary evolution with neural ODEs",
-    line: "A neural ODE surrogate for the orbital evolution of supermassive black hole binaries, trained on N-body galaxy-merger simulations and checked against direct simulation on merger timescales.",
+    id: "hybrid-closure",
+    category: "Differentiable simulation",
+    title: "Learning a turbulence closure",
+    context: "Tesseract Hackathon 2026",
+    summary: "I trained a neural correction through a coarse spectral solver so it could learn from errors that build up along a trajectory.",
+    finding: "Across 32 test trajectories, it reduced mean squared vorticity error over 500 steps by 71.7% versus the coarse solver and 15.7% versus the same network trained on individual corrections.",
+    figure: {
+      src: "media/closure_poster.jpg",
+      alt: "Three synchronised vorticity maps show filtered direct numerical simulation, the coarse solver and the solver with a learned closure. A growing chart compares the two solvers’ errors against the reference.",
+      caption: "One validation rollout. The lines show each solver’s spatial mean squared vorticity error at the current step.",
+      width: 1200,
+      height: 760,
+      video: { mp4: "media/closure.mp4", webm: "media/closure.webm" },
+    },
     links: [
-      { label: "Journal", href: "https://doi.org/10.1093/mnras/stag135" },
-      { label: "arXiv", href: "https://arxiv.org/abs/2601.13019" },
+      { label: "Interactive walkthrough", href: "https://julian-8897.github.io/tesseract-hybrid-closure/" },
+      { label: "Code", href: "https://github.com/julian-8897/tesseract-hybrid-closure" },
     ],
   },
-];
-
-export const notes = [
   {
-    date: "2026",
-    title: "Hybrid turbulence closure, interactive walkthrough",
-    href: "https://julian-8897.github.io/tesseract-hybrid-closure/",
-    line: "A marimo notebook that compares vorticity fields, rollout errors and energy spectra along a held-out validation trajectory.",
+    id: "inverse-burgers",
+    category: "Inverse problems",
+    title: "Inferring viscosity from sparse sensors",
+    context: "Tesseract Hackathon 2025 · Honourable Mention",
+    summary: "I used a differentiable Burgers solver and a flow-matching model to infer viscosity and the initial flow jointly from sparse, noisy observations.",
+    finding: "The joint posterior passed a coverage check. Simulation-based calibration showed that uncertainty in viscosity alone was too narrow.",
+    figure: {
+      src: "media/burgers_poster.jpg",
+      alt: "A velocity front steepens and diffuses within a posterior predictive band. A space-time map fills in as sensor readings appear, beside the viscosity posterior and true value.",
+      caption: "A flow reconstructed from 64 sensor readings, with a predictive band from 256 posterior draws.",
+      width: 1440,
+      height: 850,
+      video: { mp4: "media/burgers.mp4", webm: "media/burgers.webm" },
+    },
+    links: [{ label: "Code", href: "https://github.com/julian-8897/tesseract-pinn-inverse-burgers" }],
   },
 ];
 
-export const software = [
-  { repo: "budgeted-search-ai4science", line: "Runs budget-matched searches over neural operator configurations and replays the feedback given to the controller." },
-  { repo: "research-brief-agent", line: "Retrieves papers and writes cited technical briefs with a record of the evidence consulted." },
-  { repo: "tesseract-hybrid-closure", line: "Trains a PyTorch turbulence closure through a JAX spectral solver and evaluates it on held-out rollouts." },
-  { repo: "tesseract-pinn-inverse-burgers", line: "Infers Burgers parameters from sparse observations and checks posterior calibration against simulated data." },
-];
+export const researchBrief = {
+  title: "Research Brief Agent",
+  summary: "A literature agent that records which papers it retrieved and read, so researchers can trace a recommendation back to the evidence.",
+  links: [{ label: "Code", href: "https://github.com/julian-8897/research-brief-agent" }],
+};
 
-export const openProblems = [
-  "Under a fixed trial budget, when does an agent's response to validation feedback actually improve its final choice?",
-  "Does a closure trained on freely decaying turbulence keep its long-rollout accuracy when the flow is continuously forced?",
-  "Can a few gradient steps through the solver improve the calibration of an amortised viscosity posterior?",
-];
+export const astrophysics = {
+  intro: "In my PhD at the University of Surrey, I use N-body simulations to study how supermassive black hole binaries form and evolve in galaxy mergers. That work led me to neural surrogates: could a learned model recover the orbital evolution needed to estimate when the two black holes merge?",
+  figure: {
+    src: "figures/galaxy-bulge.webp",
+    alt: "Projected stellar surface density of a simulated galaxy bulge. Orange markers show massive perturbers around the central supermassive black hole.",
+    caption: "Initial conditions for a galaxy-merger simulation. Orange marks the massive perturbers around the central black hole.",
+    width: 960,
+    height: 873,
+  },
+  papers: [
+    {
+      title: "Continuous-time modelling of black hole binary evolution with neural ODEs",
+      line: "A neural ODE surrogate for orbital evolution, trained on N-body simulations and evaluated on merger timescales.",
+      href: "https://doi.org/10.1093/mnras/stag135",
+    },
+    {
+      title: "Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers",
+      line: "How encounters with massive perturbers change a binary’s eccentricity at formation.",
+      href: "https://doi.org/10.1093/mnras/stag1374",
+    },
+    {
+      title: "Converging on the eccentricity of massive black hole binaries in Galactic mergers",
+      href: "https://doi.org/10.1093/mnras/stag026",
+    },
+  ],
+};
 
-export type Publication = { authors: string; title: string; venue: string; year: string; href: string; note?: string };
-
-export const publications: Publication[] = [
-  {
-    authors: "Chan J., Mora Jimenez J.",
-    title: "Prior or Feedback? What an LLM Uses When Adapting Neural Operators",
-    venue: "NeurIPS AI4Science Workshop",
-    year: "2026",
-    href: "https://arxiv.org/abs/2610.12325",
-    note: "equal contribution",
-  },
-  {
-    authors: "Chan J., Gualandris A., Das P.",
-    title: "Continuous-time modelling of black hole binary evolution with neural ODEs",
-    venue: "MNRAS 546(3)",
-    year: "2026",
-    href: "https://doi.org/10.1093/mnras/stag135",
-  },
-  {
-    authors: "Chan J., Gualandris A., Dehnen W., Read J.",
-    title: "Perturber-driven dynamics of supermassive black hole binaries in galaxy mergers",
-    venue: "MNRAS 550(4)",
-    year: "2026",
-    href: "https://doi.org/10.1093/mnras/stag1374",
-  },
-  {
-    authors: "Gualandris A., Read J., Fastidio F., Chan J., François T., Khonji N., Dehnen W.",
-    title: "Converging on the eccentricity of massive black hole binaries in Galactic mergers",
-    venue: "MNRAS 546(1)",
-    year: "2026",
-    href: "https://doi.org/10.1093/mnras/stag026",
-  },
-];
+export const interests = {
+  summary: "I’m interested in neural surrogates for dynamical systems, differentiable simulation, simulation-based inference and the evaluation of AI agents for scientific experiments.",
+  invitation: "If you’re working on related problems or hiring for AI for Science research engineering, I’d like to hear from you.",
+};

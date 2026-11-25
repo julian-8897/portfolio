@@ -1,5 +1,8 @@
 import { useEffect } from "react";
-import { earlierWork, notes, openProblems, person, publications, software, themes, type Project } from "@/content";
+import {
+  astrophysics, featuredPaper, interests, person, researchBrief, simulationProjects,
+  type Figure, type Link, type SimulationProject,
+} from "@/content";
 
 function Ext({ href, children }: { href: string; children: React.ReactNode }) {
   const external = href.startsWith("http");
@@ -10,96 +13,74 @@ function Ext({ href, children }: { href: string; children: React.ReactNode }) {
   );
 }
 
-const figureNumber = new Map(
-  themes.flatMap((t) => t.projects).filter((p) => p.figure).map((p, i) => [p.id, i + 1]),
-);
-
-function ProjectEntry({ p }: { p: Project }) {
-  const n = figureNumber.get(p.id);
-  const fig = p.figure;
+function ProjectLinks({ links }: { links: Link[] }) {
   return (
-    <article className="s-row s-project" id={p.id}>
-      <aside className="s-margin">
-        <span>{p.year}</span>
-        {p.venue && <span>{p.venue}</span>}
-        {p.role && <span>{p.role}</span>}
-        <span className="s-mlinks">
-          {p.links.map((l) => (
-            <Ext key={l.href} href={l.href}>
-              {l.label} ↗
-            </Ext>
-          ))}
-        </span>
-      </aside>
-      <div className="s-main">
-        <h4>{p.title}</h4>
-        <p>
-          {p.question} {p.approach}
-        </p>
-        <p>
-          {p.finding} {p.implication}
-        </p>
-        {fig && (
-          <figure className={`s-fig${fig.width ? ` s-fig--${fig.width}` : ""}`}>
-            {fig.video ? (
-              <video
-                autoPlay
-                muted
-                loop
-                playsInline
-                preload="metadata"
-                poster={fig.src}
-                aria-label={fig.alt}
-                style={{ aspectRatio: fig.aspect }}
-              >
-                <source src={fig.video.webm} type="video/webm" />
-                <source src={fig.video.mp4} type="video/mp4" />
-              </video>
-            ) : (
-              <img src={fig.src} alt={fig.alt} loading="lazy" style={{ aspectRatio: fig.aspect }} />
-            )}
-            <figcaption>
-              <b>Fig. {n}.</b> {fig.caption}
-            </figcaption>
-          </figure>
-        )}
+    <ul className="s-links">
+      {links.map(({ href, label }) => (
+        <li key={href}>
+          <Ext href={href}>{label} <span aria-hidden="true">↗</span></Ext>
+        </li>
+      ))}
+    </ul>
+  );
+}
+
+function ProjectFigure({ figure, priority = false }: { figure: Figure; priority?: boolean }) {
+  return (
+    <figure className="s-figure">
+      {figure.video ? (
+        <video
+          controls
+          autoPlay
+          muted
+          loop
+          playsInline
+          preload="metadata"
+          poster={figure.src}
+          aria-label={figure.alt}
+          width={figure.width}
+          height={figure.height}
+        >
+          <source src={figure.video.webm} type="video/webm" />
+          <source src={figure.video.mp4} type="video/mp4" />
+          <a href={figure.video.mp4}>Download the animation</a>
+        </video>
+      ) : (
+        <Ext href={figure.src}>
+          <img
+            src={figure.src}
+            alt={figure.alt}
+            width={figure.width}
+            height={figure.height}
+            loading={priority ? "eager" : "lazy"}
+          />
+        </Ext>
+      )}
+      <figcaption>{figure.caption}</figcaption>
+    </figure>
+  );
+}
+
+function SimulationEntry({ project }: { project: SimulationProject }) {
+  return (
+    <article className="s-simulation" id={project.id}>
+      <p className="s-category">{project.category}</p>
+      <h3>{project.title}</h3>
+      <p className="s-context">{project.context}</p>
+      <ProjectFigure figure={project.figure} />
+      <p>{project.summary}</p>
+      <p>{project.finding}</p>
+      <div className="s-simulation-links" id={project.id === "hybrid-closure" ? "notes" : undefined}>
+        <ProjectLinks links={project.links} />
       </div>
     </article>
   );
 }
 
-function Section({ id, title, intro, children }: { id: string; title: string; intro?: string; children: React.ReactNode }) {
-  return (
-    <section className="s-section" id={id}>
-      <div className="s-row">
-        <h2>{title}</h2>
-        {intro ? <p className="s-main s-section-intro">{intro}</p> : <span />}
-      </div>
-      {children}
-    </section>
-  );
-}
-
-function Authors({ text }: { text: string }) {
-  const parts = text.split("Chan J.");
-  return (
-    <>
-      {parts.map((s, i) => (
-        <span key={i}>
-          {s}
-          {i < parts.length - 1 && <b>Chan J.</b>}
-        </span>
-      ))}
-    </>
-  );
-}
-
-// Looping figures stop on their poster frame when the viewer prefers reduced motion.
-// Kept dependency-free so the artifact build can inline it as a script.
+// Shared by the React page and the static Artifact build.
 export function pauseForReducedMotion() {
-  if (!window.matchMedia?.("(prefers-reduced-motion: reduce)").matches) return;
-  document.querySelectorAll("video[autoplay]").forEach((v) => {
-    const video = v as HTMLVideoElement;
+  if (!window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  document.querySelectorAll<HTMLVideoElement>("video[autoplay]").forEach((video) => {
     video.removeAttribute("autoplay");
     video.pause();
     video.currentTime = 0;
@@ -110,163 +91,100 @@ export default function Site({ showCv = true }: { showCv?: boolean }) {
   useEffect(() => {
     pauseForReducedMotion();
   }, []);
+
   return (
-    <div className="site">
+    <div className="site" id="top">
       <div className="s-wrap">
-        <header className="s-row s-head">
-          <aside className="s-margin">
-            <span>University of Surrey</span>
-            <span>Final-year PhD</span>
-          </aside>
-          <div className="s-main">
-            <h1>{person.name}</h1>
-            <p className="s-statement">{person.statement}</p>
-            <p className="s-latest">
-              Latest: <a href="#llm-fno">Prior or Feedback? What an LLM Uses When Adapting Neural Operators</a>, NeurIPS 2026
-              AI4Science Workshop.
-            </p>
-            <div className="s-contact">
-              <span className="s-email">{person.email}</span>
-              <Ext href={person.links.github}>GitHub</Ext>
-              <Ext href={person.links.scholar}>Scholar</Ext>
-              <Ext href={person.links.linkedin}>LinkedIn</Ext>
-            </div>
-            <nav className="s-nav" aria-label="Sections">
-              <a href="#research">Research</a>
-              <a href="#notes">Notes</a>
-              <a href="#software">Software</a>
-              <a href="#publications">Publications</a>
-              <a href="#open-problems">Open problems</a>
-              <a href="#about">About</a>
-            </nav>
-          </div>
+        <header className="s-masthead">
+          <a className="s-name" href="#top">{person.name}</a>
+          <nav className="s-nav" aria-label="Sections">
+            <a href="#research">Research</a>
+            <a href="#astrophysics">Astrophysics</a>
+            <a href="#about">Contact</a>
+            {showCv && <Ext href={person.links.cv}>CV <span aria-hidden="true">↗</span></Ext>}
+          </nav>
         </header>
-
-        <section className="s-section" id="research">
-          <div className="s-row">
-            <h2>Research</h2>
-            <span />
-          </div>
-          {themes.map((t) => (
-            <div key={t.id} className="s-theme" id={t.id}>
-              <div className="s-row">
-                <span />
-                <div className="s-main">
-                  <h3>{t.title}</h3>
-                  <p className="s-theme-blurb">{t.blurb}</p>
-                </div>
-              </div>
-              {t.projects.map((p) => (
-                <ProjectEntry key={p.id} p={p} />
-              ))}
+        <main>
+          <section className="s-hero" aria-labelledby="role">
+            <h1 id="role">
+              <span>AI for Science{" "}</span>Research Engineer
+            </h1>
+            <p>{person.statement}</p>
+            <div className="s-actions">
+              <a className="s-button" href="#research">Explore my work <span aria-hidden="true">↓</span></a>
+              <a className="s-contact-link" href="#about">Get in touch <span aria-hidden="true">↗</span></a>
             </div>
-          ))}
-          <div className="s-theme" id="earlier">
-            <div className="s-row">
-              <span />
-              <h3 className="s-main s-earlier-title">Earlier work</h3>
+          </section>
+
+          <section className="s-research" id="research" aria-label="Selected research">
+            <article className="s-feature" id="llm-fno">
+              <div className="s-feature-heading" id="agents">
+                <p className="s-category">{featuredPaper.venue}</p>
+                <h2>{featuredPaper.title}</h2>
+              </div>
+              <ProjectFigure figure={featuredPaper.figure} priority />
+              <div className="s-feature-details">
+                <p>{featuredPaper.summary}</p>
+                <p>{featuredPaper.finding}</p>
+                <p className="s-context">Equal contribution</p>
+                <ProjectLinks links={featuredPaper.links} />
+              </div>
+            </article>
+
+            <section className="s-section" id="differentiable" aria-labelledby="simulation-title">
+              <h2 id="simulation-title">Learning with simulators</h2>
+              <p className="s-intro">I use differentiable solvers to learn corrections to physical models and to infer parameters from observations.</p>
+              <div className="s-simulation-grid">
+                {simulationProjects.map((project) => <SimulationEntry key={project.id} project={project} />)}
+              </div>
+            </section>
+
+            <article className="s-brief" id="research-brief-agent">
+              <div id="software">
+                <h3>{researchBrief.title}</h3>
+                <p>{researchBrief.summary}</p>
+              </div>
+              <ProjectLinks links={researchBrief.links} />
+            </article>
+          </section>
+
+          <section className="s-section s-astro" id="astrophysics" aria-labelledby="astro-title">
+            <div className="s-astro-media">
+              <ProjectFigure figure={astrophysics.figure} />
             </div>
-            {earlierWork.map((w) => (
-              <div key={w.title} className="s-row s-earlier">
-                <aside className="s-margin">
-                  <span>{w.year}</span>
-                  <span>{w.venue}</span>
-                </aside>
-                <div className="s-main">
-                  <p>
-                    <b>{w.title}.</b> {w.line}{" "}
-                    {w.links.map((l, i) => (
-                      <span key={l.href}>
-                        {i > 0 && " · "}
-                        <Ext href={l.href}>{l.label}</Ext>
-                      </span>
-                    ))}
-                  </p>
-                </div>
+            <div className="s-astro-copy">
+              <p className="s-category">Astrophysics</p>
+              <h2 id="astro-title">Supermassive black hole binaries</h2>
+              <p>{astrophysics.intro}</p>
+              <div id="earlier">
+                <h3 id="publications">Selected astrophysics papers</h3>
+                <ul className="s-papers">
+                  {astrophysics.papers.map((paper) => (
+                    <li key={paper.href}>
+                      <Ext href={paper.href}>{paper.title} <span aria-hidden="true">↗</span></Ext>
+                      {paper.line && <p>{paper.line}</p>}
+                    </li>
+                  ))}
+                </ul>
               </div>
-            ))}
-          </div>
-        </section>
-
-        <Section id="notes" title="Notes">
-          <div className="s-list">
-            {notes.map((n) => (
-              <div key={n.href} className="s-row">
-                <span className="s-margin">{n.date}</span>
-                <div className="s-main">
-                  <p>
-                    <Ext href={n.href}>{n.title}</Ext>
-                  </p>
-                  <p className="s-sub">{n.line}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="software" title="Software">
-          <div className="s-list">
-            {software.map((s) => (
-              <div key={s.repo} className="s-row">
-                <span className="s-margin" />
-                <div className="s-main">
-                  <p className="s-repo">
-                    <Ext href={`${person.links.github}/${s.repo}`}>{s.repo}</Ext>
-                  </p>
-                  <p className="s-sub">{s.line}</p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="publications" title="Publications">
-          <div className="s-list">
-            {publications.map((p) => (
-              <div key={p.href} className="s-row s-pub">
-                <span className="s-margin">{p.year}</span>
-                <p className="s-main">
-                  <Authors text={p.authors} /> <Ext href={p.href}>{p.title}</Ext>. <i>{p.venue}</i>
-                  {p.note && `, ${p.note}`}.
-                </p>
-              </div>
-            ))}
-          </div>
-        </Section>
-
-        <Section id="open-problems" title="Open problems" intro="Questions I would like to work on with others. If one overlaps with yours, email me.">
-          <div className="s-row">
-            <span />
-            <ol className="s-main s-problems">
-              {openProblems.map((q) => (
-                <li key={q}>{q}</li>
-              ))}
-            </ol>
-          </div>
-        </Section>
-
-        <Section id="about" title="About">
-          <div className="s-row s-about">
-            <span />
-            <div className="s-main">
-              {person.about.map((para) => (
-                <p key={para}>{para}</p>
-              ))}
-              <p className="s-stack">{person.stack.join(" · ")}</p>
-              {showCv && (
-                <p>
-                  <Ext href={person.links.cv}>CV (PDF)</Ext>
-                </p>
-              )}
             </div>
-          </div>
-        </Section>
+          </section>
 
-        <footer className="s-row s-foot">
-          <span />
-          <p className="s-main">
-            {person.name} · <span className="s-email">{person.email}</span>
-          </p>
+          <section className="s-interests" id="about" aria-labelledby="contact-title">
+            <h2 id="contact-title">Interests and contact</h2>
+            <p>{interests.summary}</p>
+            <p>{interests.invitation}</p>
+            <a className="s-button" href={`mailto:${person.email}`}>{person.email} <span aria-hidden="true">↗</span></a>
+          </section>
+        </main>
+
+        <footer className="s-footer">
+          <a className="s-name" href="#top">{person.name}</a>
+          <ProjectLinks links={[
+            { label: "GitHub", href: person.links.github },
+            { label: "Google Scholar", href: person.links.scholar },
+            { label: "LinkedIn", href: person.links.linkedin },
+          ]} />
         </footer>
       </div>
     </div>
